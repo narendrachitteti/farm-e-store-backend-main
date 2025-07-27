@@ -11,6 +11,9 @@ exports.createProduct = async (req, res) => {
       title,
       sub_title,
       description,
+      chemical_content,
+      features_benefits,
+      modes_of_use,
       category_id,
       sub_category_id,
       brand_id,
@@ -21,14 +24,23 @@ exports.createProduct = async (req, res) => {
       agent_commission
     } = req.body;
 
-
-    const file = req.file;
-
-    if (!file || !title || !sub_title || !description || !super_cat_id) {
-      return res.status(400).json({ message: "All fields are required" });
+    const files = req.files;
+    if (!files || files.length !== 3 || !title || !sub_title || !description || !super_cat_id) {
+      return res.status(400).json({ message: "All fields and exactly 3 images are required" });
     }
 
-    const s3Response = await uploadFileToS3(file);
+    // Upload all images to S3
+    const images = await Promise.all(
+      files.map(async (file) => {
+        const s3Response = await uploadFileToS3(file);
+        return {
+          fileName: file.originalname,
+          imageUrl: s3Response.url,
+          imagePublicId: s3Response.key,
+        };
+      })
+    );
+
     const parsedPackageQty =
       typeof package_qty === "string" ? JSON.parse(package_qty) : package_qty;
 
@@ -36,13 +48,14 @@ exports.createProduct = async (req, res) => {
       typeof retailer_package_qty === "string" ? JSON.parse(retailer_package_qty) : retailer_package_qty;
 
     const product = new Product({
-      fileName: file.originalname,
-      imageUrl: s3Response.url,
-      imagePublicId: s3Response.key,
+      images,
       super_cat_id: super_cat_id,
       title,
       sub_title,
       description,
+      chemical_content,
+      features_benefits,
+      modes_of_use,
       category_id,
       sub_category_id,
       brand_id,
@@ -87,6 +100,9 @@ exports.updateProduct = async (req, res) => {
       title,
       sub_title,
       description,
+      chemical_content,
+      features_benefits,
+      modes_of_use,
       category_id,
       sub_category_id,
       brand_id,
@@ -97,12 +113,15 @@ exports.updateProduct = async (req, res) => {
       agent_commission
     } = req.body;
 
-    const file = req.file;
+    const files = req.files;
     const updateData = {
       super_cat_id,
       title,
       sub_title,
       description,
+      chemical_content,
+      features_benefits,
+      modes_of_use,
       category_id,
       sub_category_id,
       brand_id,
@@ -119,10 +138,18 @@ exports.updateProduct = async (req, res) => {
       updateData.retailer_package_qty =
         typeof retailer_package_qty === "string" ? JSON.parse(retailer_package_qty) : retailer_package_qty;
     }
-    if (file) {
-      const s3Response = await uploadFileToS3(file);
-      updateData.imageUrl = s3Response.url;
-      updateData.imagePublicId = s3Response.key;
+    if (files && files.length === 3) {
+      // Optionally, you may want to delete old images from S3 here
+      updateData.images = await Promise.all(
+        files.map(async (file) => {
+          const s3Response = await uploadFileToS3(file);
+          return {
+            fileName: file.originalname,
+            imageUrl: s3Response.url,
+            imagePublicId: s3Response.key,
+          };
+        })
+      );
     }
 
     const product = await Product.findByIdAndUpdate(req.params.id, updateData, {

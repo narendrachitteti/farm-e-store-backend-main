@@ -17,6 +17,8 @@ const adminRoute = require("./routes/AdminRoute");
 const orderRoute = require("./routes/OrderRoute");
 const superCatRoute = require("./routes/SuperCatRoute");
 
+const entrepreneurRoute = require("./routes/EntrepreneurRoute");
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -37,6 +39,8 @@ app.use("/api/crop", cropRoute);
 app.use("/api/product", productRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/order", orderRoute)
+
+app.use("/api/entrepreneur", entrepreneurRoute);
 
 const razorpay = new Razorpay({
   key_id: "rzp_test_lAupy84di3wKt5",
@@ -86,5 +90,5 @@ app.post("/api/razorpay/verify-razorpay-payment", (req, res) => {
 
 const port = config.port || 3000;
 app.listen(port, () => {
-  console.log("server is running");
+  console.log(`server is running on port ${port}`);
 });
