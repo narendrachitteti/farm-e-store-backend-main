@@ -40,6 +40,8 @@ const ProductSchema = new mongoose.Schema(
     chemical_content: { type: String },
     features_benefits: { type: String },
     modes_of_use: { type: String },
+    method_of_application: { type: String },
+    recommendations: { type: String },
     mfg_by: { type: String },
     agent_commission: { type: String },
     package_qty: [
