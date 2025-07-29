@@ -20,6 +20,7 @@ exports.createProduct = async (req, res) => {
       sub_category_id,
       brand_id,
       crop_id,
+      pest_id,
       mfg_by,
       package_qty,
       retailer_package_qty,
@@ -64,6 +65,7 @@ exports.createProduct = async (req, res) => {
       sub_category_id,
       brand_id,
       crop_id,
+      pest_id,
       mfg_by,
       package_qty: parsedPackageQty,
       retailer_package_qty: parsedRetailerPackageQty,
@@ -113,6 +115,7 @@ exports.updateProduct = async (req, res) => {
       sub_category_id,
       brand_id,
       crop_id,
+      pest_id,
       mfg_by,
       package_qty,
       retailer_package_qty,
@@ -134,6 +137,7 @@ exports.updateProduct = async (req, res) => {
       sub_category_id,
       brand_id,
       crop_id,
+      pest_id,
       mfg_by,
       agent_commission
     };

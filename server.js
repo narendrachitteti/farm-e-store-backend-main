@@ -16,7 +16,7 @@ const productRoute = require("./routes/ProductRoute");
 const adminRoute = require("./routes/AdminRoute");
 const orderRoute = require("./routes/OrderRoute");
 const superCatRoute = require("./routes/SuperCatRoute");
-
+const pestRoute = require("./routes/PestRoute");
 const entrepreneurRoute = require("./routes/EntrepreneurRoute");
 
 const app = express();
@@ -39,7 +39,7 @@ app.use("/api/crop", cropRoute);
 app.use("/api/product", productRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/order", orderRoute)
-
+app.use("/api/pest", pestRoute);
 app.use("/api/entrepreneur", entrepreneurRoute);
 
 const razorpay = new Razorpay({

@@ -34,6 +34,11 @@ const ProductSchema = new mongoose.Schema(
       ref: "Crop",
       required: true,
     },
+    pest_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Pest",
+      required: true, // Not all products must be linked to a pest
+    },
     title: { type: String, required: true },
     sub_title: { type: String, required: true },
     description: { type: String, required: true },
