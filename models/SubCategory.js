@@ -5,10 +5,10 @@ const subcategorySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  sub_title: {
-    type: String,
-    required: true,
-  },
+  // sub_title: {
+  //   type: String,
+  //   required: true,
+  // },
   super_cat_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "SuperCategory",
@@ -19,9 +19,9 @@ const subcategorySchema = new mongoose.Schema({
     ref: "Category",
     required: true,
   },
-  description: {
-    type: String,
-  },
+  // description: {
+  //   type: String,
+  // },
   fileName: {
     type: String,
     required: true,

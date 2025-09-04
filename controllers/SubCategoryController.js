@@ -6,10 +6,10 @@ const {
 
 exports.createSubCategory = async (req, res) => {
   try {
-    const { title, sub_title, description, category_id, super_cat_id } = req.body;
+    const { title, category_id, super_cat_id } = req.body;
     const file = req.file;
 
-    if (!file || !title || !sub_title || !description || !super_cat_id) {
+    if (!file || !title || !super_cat_id) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -21,8 +21,6 @@ exports.createSubCategory = async (req, res) => {
       imagePublicId: s3Response.key,
       super_cat_id: super_cat_id,
       title,
-      sub_title,
-      description,
       category_id,
     });
 
@@ -58,9 +56,9 @@ exports.getByIdSubCategories = async (req, res) => {
 
 exports.updateSubCategory = async (req, res) => {
   try {
-    const { title, sub_title, description, category_id, super_cat_id } = req.body;
+    const { title, category_id, super_cat_id } = req.body;
     const file = req.file;
-    const updateData = { title, sub_title, description, category_id, super_cat_id };
+    const updateData = { title, category_id, super_cat_id };
 
     if (file) {
       const s3Response = await uploadFileToS3(file);

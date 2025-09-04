@@ -7,10 +7,10 @@ const {
 
 exports.createCategory = async (req, res) => {
   try {
-    const { title, sub_title, description } = req.body;
+    const { title } = req.body;
     const file = req.file;
 
-    if (!file || !title || !sub_title || !description) {
+    if (!file || !title) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -21,8 +21,7 @@ exports.createCategory = async (req, res) => {
       imageUrl: s3Response.url,
       imagePublicId: s3Response.key,
       title,
-      sub_title,
-      description,
+     
     });
 
     await category.save();
@@ -57,9 +56,9 @@ exports.getCategoryById = async (req, res) => {
 
 exports.updateCategory = async (req, res) => {
   try {
-    const { title, sub_title, description } = req.body;
+    const { title } = req.body;
     const file = req.file;
-    const updateData = { title, sub_title, description };
+    const updateData = { title };
 
     if (file) {
       const s3Response = await uploadFileToS3(file);

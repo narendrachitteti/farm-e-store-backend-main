@@ -5,10 +5,10 @@ const {
 } = require("../service/aws-s3-service");
 exports.createCategory = async (req, res) => {
   try {
-    const { super_cat_id, title, sub_title, description } = req.body;
+    const { super_cat_id, title } = req.body;
     const file = req.file;
 
-    if (!file || !title || !sub_title || !description || !super_cat_id) {
+    if (!file || !title || !super_cat_id) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -20,8 +20,6 @@ exports.createCategory = async (req, res) => {
       imagePublicId: s3Response.key,
       super_cat_id: super_cat_id,
       title,
-      sub_title,
-      description,
     });
 
     await category.save();
@@ -56,9 +54,9 @@ exports.getCategoryById = async (req, res) => {
 
 exports.updateCategory = async (req, res) => {
   try {
-    const { title, sub_title, description, super_cat_id } = req.body;
+    const { title, super_cat_id } = req.body;
     const file = req.file;
-    const updateData = { title, sub_title, description, super_cat_id };
+    const updateData = { title, super_cat_id };
 
     if (file) {
       const s3Response = await uploadFileToS3(file);
