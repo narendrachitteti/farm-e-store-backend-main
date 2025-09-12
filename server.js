@@ -18,7 +18,7 @@ const orderRoute = require("./routes/OrderRoute");
 const superCatRoute = require("./routes/SuperCatRoute");
 const pestRoute = require("./routes/PestRoute");
 const entrepreneurRoute = require("./routes/EntrepreneurRoute");
-
+const counterRoute = require("./routes/CounterRoute");
 const app = express();
 
 app.use(bodyParser.json());
@@ -34,6 +34,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/super-category", superCatRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/subcategory", subCategoryRoute);
+app.use("/api/counter", counterRoute);
 app.use("/api/brand", brandRoute);
 app.use("/api/crop", cropRoute);
 app.use("/api/product", productRoute);

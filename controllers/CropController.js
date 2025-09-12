@@ -6,10 +6,10 @@ const {
 
 exports.createCrop = async (req, res) => {
   try {
-    const { title, sub_title, description } = req.body;
+    const { title, products } = req.body;
     const file = req.file;
 
-    if (!file || !title || !sub_title || !description) {
+    if (!file || !title) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -20,8 +20,7 @@ exports.createCrop = async (req, res) => {
       imageUrl: s3Response.url,
       imagePublicId: s3Response.key,
       title,
-      sub_title,
-      description,
+      products, // array of product IDs
     });
 
     await crop.save();
@@ -53,9 +52,9 @@ exports.getByIdCrops = async (req, res) => {
 
 exports.updateCrop = async (req, res) => {
   try {
-    const { title, sub_title, description } = req.body;
+    const { title, products } = req.body;
     const file = req.file;
-    const updateData = { title, sub_title, description };
+    const updateData = { title, products };
 
     if (file) {
       const s3Response = await uploadFileToS3(file);

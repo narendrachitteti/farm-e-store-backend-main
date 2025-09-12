@@ -5,14 +5,6 @@ const BrandSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  sub_title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
   fileName: {
     type: String,
     required: true,
@@ -25,6 +17,12 @@ const BrandSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  products: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
 });
 
 module.exports = mongoose.model("Brand", BrandSchema);
