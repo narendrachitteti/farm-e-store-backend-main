@@ -56,9 +56,20 @@ exports.getCategoryById = async (req, res) => {
 
 exports.updateCategory = async (req, res) => {
   try {
-    const { title } = req.body;
+    let { title, enabled } = req.body;
     const file = req.file;
-    const updateData = { title };
+    const updateData = {};
+
+    if (title !== undefined) updateData.title = title;
+
+    // Parse enabled correctly
+    if (enabled !== undefined) {
+      if (typeof enabled === "string") {
+        updateData.enabled = enabled === "true" || enabled === "1";
+      } else {
+        updateData.enabled = Boolean(enabled);
+      }
+    }
 
     if (file) {
       const s3Response = await uploadFileToS3(file);
@@ -68,17 +79,18 @@ exports.updateCategory = async (req, res) => {
 
     const category = await Category.findByIdAndUpdate(
       req.params.id,
-      updateData,
+      { $set: updateData },
       { new: true }
     );
-    if (!category)
-      return res.status(404).json({ message: "Category not found" });
+
+    if (!category) return res.status(404).json({ message: "Category not found" });
 
     res.status(200).json(category);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 exports.deleteCategory = async (req, res) => {
   try {

@@ -6,8 +6,7 @@ const SuperCategorySchema = new mongoose.Schema(
         imageUrl: { type: String, required: true },
         imagePublicId: { type: String, required: true },
         title: { type: String, required: true },
-        // sub_title: { type: String, required: true },
-        // description: { type: String, required: true },
+        enabled: { type: Boolean, default: true }, // Add this line
     },
     { timestamps: true }
 );
